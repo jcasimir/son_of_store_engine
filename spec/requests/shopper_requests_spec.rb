@@ -103,8 +103,11 @@ describe "shopper" do
         end
         context "if the order has billing and shipping information" do
           it "can do two-click checkout" do
-            Order.any_instance.stub(billing_method_id: 1)
-            Order.any_instance.stub(shipping_address_id: 1)
+            #Order.any_instance.stub(billing_method_id: 1)
+            #Order.any_instance.stub(shipping_address_id: 1)
+            billing = Fabricate(:billing_method)
+            shipping = Fabricate(:shipping_address)
+            Order.last.update_attributes(billing_method_id: billing.id, shipping_address_id: shipping.id)
             within "#cart-aside" do
               page.should have_content "Two-Click Check Out"
               click_link_or_button "Two-Click Check Out"
