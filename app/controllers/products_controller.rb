@@ -12,9 +12,9 @@ class ProductsController < ApplicationController
       else
         ["title LIKE ?", "%#{params[:filtered]}%"]
       end
-      )
+      ).page(params[:page]).per(9)
     else
-      @products = active_store_products.all
+      @products = active_store_products.page(params[:page]).per(9)
       @line_item = LineItem.new
     end
   end

@@ -1,16 +1,7 @@
 module ExtraCategoryMethods
-  def lookup_category
+  def lookup_category_and_products
     @category = store_categories.where(id: params[:id]).first
-    @products = @category.products
-  end
-
-  def store_categories
-    Category.where(store_id: @current_store.id)
-  end
-
-  def lookup_category
-    @category = store_categories.where(id: params[:id]).first
-    @products = @category.products
+    @products = @category.products.page(params[:page]).per(9)
   end
 
   def store_categories
