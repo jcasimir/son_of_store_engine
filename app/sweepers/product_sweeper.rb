@@ -12,7 +12,12 @@ class ProductSweeper < ActionController::Caching::Sweeper
   private
 
   def expire_caches_for(product)
-    expire_fragment("#{product.store.to_param}_products")
-    expire_fragment("#{product.store.to_param}_admin_products")
+    page_count = (store_products.count/ITEMS_PER_PAGE) + 1
+    expire_fragment "#{product.store.to_param}_products_"
+    expire_fragment "#{product.store.to_param}_admin_products_"
+    (2..page_count).each do |page_number|
+      expire_fragment "#{product.store.to_param}_products_#{page_number}"
+      expire_fragment "#{product.store.to_param}_admin_products_#{page_number}"
+    end
   end
 end
